@@ -1,0 +1,17 @@
+{
+  "name": "skill-conversion-marketplace",
+  "owner": {
+    "name": "oreguchi"
+  },
+  "plugins": [
+    {
+      "name": "skill-conversion",
+      "description": "Convert existing Claude Code skills across three dimensions (technical / locale / agent) with disciplined fixpoint loop and three-layer verification.",
+      "version": "0.1.0",
+      "source": "./",
+      "author": {
+        "name": "oreguchi"
+      }
+    }
+  ]
+}
