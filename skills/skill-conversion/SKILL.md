@@ -1,6 +1,6 @@
 ---
 name: skill-conversion
-description: "Convert an existing Claude Code skill (or other agent's skill) into a new variant by transforming one or more dimensions: programming language/framework (e.g., C# → VB.NET, React → Vue), natural language locale (e.g., EN → JA), or target agent (e.g., Claude Code → Copilot CLI / Gemini CLI / Codex). Any combination is supported. Use when asked to port, translate, adapt, or re-target an existing skill. Requires superpowers and empirical-prompt-tuning plugins."
+description: "Convert an existing Claude Code skill (or other agent's skill) into a new variant by transforming one or more dimensions: programming language/framework (e.g., C# → VB.NET, React → Vue), natural language locale (e.g., EN → JA), or target agent (e.g., Claude Code → Copilot CLI / Gemini CLI / Codex). Any combination is supported. v1.0 introduces Conversion Profile (high-fidelity / balanced / high-utility) and a Catalog System that structures the detection of target-environment utility. Use when asked to port, translate, adapt, or re-target an existing skill. Requires superpowers and empirical-prompt-tuning plugins."
 ---
 
 # skill-conversion
