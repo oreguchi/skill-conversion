@@ -10,6 +10,15 @@ A Claude Code plugin that converts existing skills across any combination of thr
 
 Naive "translate this skill" prompts silently add content, silently drop content, produce terminology drift, and leave no diff trail. This plugin replaces prompt-level care with a structural workflow that records every change and asks for approval before it happens.
 
+### What's new in v1.0.0
+
+- **Conversion Profile** — declare the conversion's expected-value level in 3 stages (high-fidelity / balanced / high-utility) at Phase 0 §7. The profile mechanically controls Phase 4 opt-in, the approved-additions threshold, and the Catalog reference range.
+- **Catalog System** — capture target-environment-specific "expected capabilities" (Tier 1 / 2 / 3) and "gotchas" in `references/catalogs/<lang>-<framework>.md`. Two-stage approval: content approval, then persistence approval.
+- **9-cell approval table** — Category (A / B / C) × Profile drives mechanical auto-approve / user-approval / rejection decisions for approved-additions.
+- **Phase 3 source-confirmation** — adopted APIs are recorded with a 4-tier officiality level (Official / Standard / Peripheral / Unknown). Peripheral / Unknown adoptions trigger mandatory both-pattern annotation.
+
+See `RELEASE_NOTES.md` for the full changelog and `skills/skill-conversion/references/migration-v02-to-v10.md` for migration from v0.2.
+
 ### What's inside
 
 | Component | Purpose |
@@ -156,6 +165,15 @@ MIT. See [LICENSE](./LICENSE).
 既存の Claude Code スキルを、**プログラミング言語 / フレームワーク**、**自然言語ロケール**、**ターゲットエージェント** の 3 次元（任意の組み合わせ）で変換するための Claude Code プラグインです。元スキルからのズレは、すべて一件ずつユーザー承認され、監査ログに残ります。
 
 「このスキルを日本語に翻訳して」とアドホックに頼むと、元に無かった情報が静かに追加され、訳しにくい部分が静かに消え、用語にぶれが出て、差分も追えません。本プラグインは、プロンプトでの気配りに頼るのをやめて、**構造化されたワークフロー**で変更を残らず記録し、実行前にユーザー承認を取る形に置き換えます。
+
+### v1.0.0 の新機能
+
+- **Conversion Profile**: Phase 0 §7 で変換の期待値を 3 段階（高忠実度 / バランス / 高有用性）で宣言。profile が Phase 4 opt-in、approved-additions 閾値、Catalog 参照範囲を機械的に制御
+- **Catalog System**: ターゲット環境特有の「期待機能（Tier 1/2/3）」と「罠」を `references/catalogs/<lang>-<framework>.md` に蓄積。内容承認 + 永続化承認の 2 段階ゲート
+- **9 マス承認テーブル**: Category（A/B/C）× Profile で approved-additions の自動判定（自動承認 / user 承認必須 / 拒否）
+- **Phase 3 出典確認**: 採用 API の公式性を 4 段階（Official / Standard / Peripheral / Unknown）で記録。Peripheral / Unknown 採用時は両パターン併記を必須化
+
+詳細は `RELEASE_NOTES.md` を、v0.2 からの移行手順は `skills/skill-conversion/references/migration-v02-to-v10.md` を参照してください。
 
 ### 収録内容
 
