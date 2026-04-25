@@ -64,6 +64,12 @@ iteration i:
 - **Default:** one zero-change pass is enough
 - **High-stakes skills (recommended uplift):** require two consecutive zero-change passes. Use this when the skill will be widely used or when source-compare findings have been frequent in earlier iterations
 
+### v1.0 convergence stance
+
+In v1.0 the convergence criterion is **always high-stakes** (two consecutive zero-change passes), independent of the active Conversion Profile. The reasoning: profile is a tool for shaping what the skill covers, not for relaxing the quality gate that proves it converges.
+
+Profile-driven differences appear instead in Phase 4 opt-in control, the approved-additions threshold, and the Catalog reference range. See `references/profile-system.md`.
+
 ## When to halt for user input
 
 - Source-compare finds content in target that is absent from source AND not in the register → stop, present to user, apply their decision, resume loop
