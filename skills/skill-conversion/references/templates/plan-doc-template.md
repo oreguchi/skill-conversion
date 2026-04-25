@@ -51,8 +51,8 @@ At least one row must be "yes".
 
 ### 5. Approved-additions register (initially empty)
 
-| Added-on | Location | Summary | Reason | Source-phase | Impact | Approver |
-|---|---|---|---|---|---|---|
+| Added-on | Location | Summary | Category | Reason | Source-phase | Impact | Approver |
+|---|---|---|---|---|---|---|---|
 
 ### 6. Evaluation-scenario skeleton
 
@@ -60,22 +60,41 @@ At least one row must be "yes".
 
 - Situation: <one paragraph>
 - Requirement checklist:
-  - [ ] [critical] <item>
-  - [ ] <item>
-  - [ ] <item>
+  - [ ] [critical] [Tier 1] <fidelity-extension item required by all profiles>
+  - [ ] [Tier 1] <core capability coverage>
+  - [ ] [Tier 2] <item embedded for balanced or higher>
+  - [ ] [Tier 3] <item embedded only for high-utility (optional)>
 
 #### Scenario 2 (edge)
 
-<same structure>
+<same structure — apply the same Tier-tagging convention>
 
 #### Scenario 3 (optional)
 
 <same structure>
 
-### 7. Phase 4 opt-in decision
+### 7. Conversion Profile declaration (v1.0)
 
-- [ ] opt-in (run Phase 4 per references/verification-stages.md)
-- [ ] opt-out (skip Phase 4). Reason: <reason>
+- [ ] high-fidelity (高忠実度)
+- [x] balanced (バランス)  ← default
+- [ ] high-utility (高有用性)
+
+#### §7.1 Reason if high-fidelity + Phase 4 opt-out (only when applicable)
+
+> <reason>
+
+### §X.1 Catalog status (v1.0)
+
+- Persisted catalogs scanned: <list / "none">
+- Match for this conversion: <yes — reuse / no — generate fresh>
+
+### §X.2 Catalog content (v1.0)
+
+(Record the path and a short summary of the generated / reused catalog here)
+
+- Catalog: `<path or "memory only">`
+- Persistence approval: <yes / no>
+- Tier reference range (profile-linked): Tier 1 / Tier 1+2 / Tier 1+2+3
 
 ### 8. Cross-agent verification strategy (required if agent dimension is "yes")
 
@@ -110,7 +129,7 @@ At least one row must be "yes".
 
 - [ ] Phase 2 zero-change pass
 - [ ] Phase 3 PASS (or SKIPPED)
-- [ ] Phase 4 converged (or SKIPPED per Phase 0 §7)
+- [ ] Phase 4 converged (or SKIPPED only if profile = high-fidelity + §7.1 reason recorded)
 - [ ] Phase 5 PASS
 - [ ] Drift report generated at `drift-report.md`
 - [ ] User confirmation received
