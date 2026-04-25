@@ -92,7 +92,7 @@ In addition to the existing PASS / FAIL report, append:
 
 ### Opt-out
 
-If the user opts out in Phase 0 §7, skip Phase 4 entirely. Record `Phase 4: SKIPPED by user choice (reason: <reason>)` in the plan doc. Drop Phase 4 from the completion criteria.
+Opt-out is permitted **only when the Phase 0 §7 profile is `high-fidelity`** (with a mandatory reason recorded in §7.1). Under `balanced` or `high-utility`, an opt-out attempt halts and forces re-selection — see `references/profile-system.md` § Phase 4 opt-out. When opt-out is permitted and chosen, skip Phase 4 entirely. Record `Phase 4: SKIPPED by user choice (high-fidelity profile, reason: <reason>)` in the plan doc. Drop Phase 4 from the completion criteria.
 
 ### Opt-in: preparation
 
