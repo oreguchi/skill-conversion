@@ -44,6 +44,48 @@ Apply the right response:
 
 Both categories need an audit trail. The Phase 3 record in the plan doc should list each fix with its category tag `[content]` or `[scaffolding]`.
 
+### Sub-step: Source-confirmation (v1.0 NEW)
+
+After a successful Phase 3 build, every API adopted in the target (especially APIs introduced as part of a scaffolding fix) is recorded with its **officiality level** on a 4-tier scale:
+
+#### Officiality levels
+
+| Level | Definition |
+|---|---|
+| **Official** | Listed in Microsoft Learn / official reference / language specification |
+| **Standard** | Documented in major books, official tutorials, or major OSS documentation |
+| **Peripheral** | Only described in GitHub READMEs, community wikis, or blog posts |
+| **Unknown** | Officiality not confirmed |
+
+#### "Both-pattern annotation" trigger
+
+When the adopted API's officiality is **Peripheral or Unknown**, the SKILL.md MUST present **both patterns**:
+
+- The standard pattern (using the more official API)
+- The adopted API + a usage-condition / constraint note
+
+#### Phase 3 reporting format extension
+
+In addition to the existing PASS / FAIL report, append:
+
+```
+## Adopted API roster
+
+| API | Officiality | Package | Source URL |
+|---|---|---|---|
+| AddOptionsWithValidateOnStart(Of T) | Peripheral | Microsoft.Extensions.Hosting (>=8.0) | <url-if-any> |
+| AddSingleton(Of T) | Official | Microsoft.Extensions.DependencyInjection | <url> |
+
+## APIs requiring both-pattern annotation
+- AddOptionsWithValidateOnStart → SKILL.md §AddEmailServices must present the standard chain alongside
+```
+
+#### How to perform officiality judgement
+
+- The subagent uses an approach analogous to catalog generation to decide officiality.
+- When uncertain, mark `Unknown` (do **not** speculate).
+- If the user later supplies a source URL, append it to the drift-report.
+
 ## Phase 4: Empirical prompt tuning (opt-in)
 
 **Opt-in rationale.** This layer is powerful but carries **drift risk**: a blind subagent will stumble wherever the source author intentionally assumed reader knowledge, and "fixing" that drifts the skill away from source intent. The user decides in Phase 0 whether that trade-off is worth it.
