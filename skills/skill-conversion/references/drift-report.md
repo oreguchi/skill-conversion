@@ -8,6 +8,28 @@ At completion, summarize **every deviation from the source skill**. This makes t
 
 After `superpowers:verification-before-completion` confirms completion criteria 1-4, produce the drift report. User-confirmation of the drift report is completion criterion 5.
 
+## Pre-emit frontmatter verification (mandatory)
+
+Before marking the drift report as complete, run a field-by-field diff of the YAML frontmatter between every source skill and its converted target. Record as a table in the drift report:
+
+| Skill | Field | Source value | Target value | Status |
+|---|---|---|---|---|
+| `<name>` | `name` | ... | ... | ✓ preserved / ✗ changed |
+| `<name>` | `description` | ... | ... | ✓ preserved / ✗ changed |
+| `<name>` | `invocable` | ... | ... | ✓ preserved / ✗ changed (REQUIRES register entry) |
+| `<name>` | `compatibility` | ... | ... | ✓ preserved / ✗ changed |
+| `<name>` | (any other field) | ... | ... | ... |
+
+**Rule:** any frontmatter field whose target value differs from the source without a corresponding approved-additions entry is a **drift-report error**. Resolve either by registering the change or by reverting the target to match source. The drift report CANNOT be signed off while a mismatch is outstanding.
+
+This step catches:
+- Silent field drops (source has `invocable: false`, target omits the field → default flips to `true`, a behavior change)
+- Silent field additions (target adds `invocable: false` not in source)
+- Typos in preserved fields (source `compatibility: "A"`, target `compatibility: "A."` — extra period)
+- Description rephrasing that was not intentional
+
+The verification table is a standalone section in the drift report, placed before §Summary.
+
 ## Location
 
 ```
@@ -24,6 +46,23 @@ docs/plans/YYYY-MM-DD-<target-skill-name>-conversion/drift-report.md
 **Source:** <source-skill-path>, version <N>
 **Target:** <target-path>
 **Conversion dimensions:** <list>
+
+## Frontmatter verification
+
+| Skill | Field | Source value | Target value | Status |
+|---|---|---|---|---|
+| <name> | name | ... | ... | ✓ / ✗ |
+| <name> | description | ... | ... | ✓ / ✗ |
+| <name> | invocable | ... | ... | ✓ / ✗ |
+| <name> | compatibility | ... | ... | ✓ / ✗ |
+
+(Every ✗ must link to an approved-additions entry. Unregistered ✗ = drift-report error, sign-off blocked.)
+
+## Phase 5 status
+
+| Target skill | Status | Evidence |
+|---|---|---|
+| <skill> | PASS / SKIPPED / USER-PENDING | `phase5-result.md` / source frontmatter quote / `phase5-handoff.md` |
 
 ## Summary
 
@@ -81,3 +120,5 @@ Only mark the conversion complete after explicit confirmation.
 - Omit rejected proposals from the report (loses the "considered and declined" audit trail)
 - Let the impact-summary section stand empty (drift cannot be surveyed at a glance)
 - Mark the conversion complete without user confirmation of the drift report
+- Skip the pre-emit frontmatter verification table (silent field drops or typos go undetected)
+- Record Phase 5 as PASS when the actual state is USER-PENDING (user has not yet run the fresh-session test)

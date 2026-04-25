@@ -99,6 +99,12 @@ Before writing any output, declare the 8 required items in a fresh plan doc:
 4. **Scope-strip list** — what to remove entirely (not convert), with reason per entry. If nothing is stripped, write "(none)" plus a one-line rationale.
 5. **Approved-additions register** — initialized empty, see `references/approved-additions.md` and use `references/templates/register-template.md` as the scaffold
 6. **Evaluation-scenario skeleton** — 2-3 scenarios for Phase 4 (finalized in Phase 4 if opt-in). Each scenario must list a target and a requirement checklist; tag the load-bearing items `[critical]`. Full prose is acceptable at Phase 0 — a bare one-liner is not.
+
+    **Bias-control rule.** Scenarios MUST be derived from:
+    - (a) The source skill's **declared use cases** — `description` text, "When to Use This Skill" section, `compatibility` field
+    - (b) **Realistic user prompts** — what a user unfamiliar with the skill's internals would actually type
+
+    Scenarios MUST NOT be derived by studying the source skill's body content (headings, code examples, reference-file sections). Doing so bakes in confirmation bias: the scenarios only test what you already know the skill covers, making Phase 4 a self-consistency check rather than an effectiveness check. If you must read the body to understand the source, **draft scenarios first from description + when-to-use alone**, then re-check after reading whether your scenarios accidentally leak body knowledge and revise if so.
 7. **Phase 4 opt-in decision** — yes (recommended) or no (with reason). See `references/verification-stages.md` §Phase 4 for trade-offs
 8. **Verification strategy** — if any agent dimension is non-identity, walk the user through `references/cross-agent-verification-menu.md` and record the choice per Phase 3 / 4 / 5. If the Agent dimension is identity (source-agent = target-agent), mark §8 `N/A — Agent dimension = identity` and the default Phase 3/4/5 strategies apply; the menu walk-through is skipped.
 
@@ -147,7 +153,12 @@ Every code block in the target must be verifiable in the target environment. The
 
 See `references/verification-stages.md` §Phase 3 for environment→method mapping. If the target skill contains no code blocks at all, skip this phase and note it in the plan doc.
 
-On failure: fix the code in SKILL.md, return to Phase 2 (a change happened, fixpoint must restart).
+On failure: identify whether the bug is in **(a) skill content** (a code block inside SKILL.md or a `references/` file) or **(b) verification scaffolding** (a file under a test-harness / sample-build directory that exists only to prove the skill's code compiles):
+
+- **For (a):** fix the code in the skill, **return to Phase 2** (skill content changed, fixpoint must restart)
+- **For (b):** fix the scaffolding, **do not return to Phase 2** (skill content unchanged). Log the fix in the Phase 3 record with a one-line explanation of what was wrong in the harness
+
+Never modify skill content to make scaffolding bugs disappear. If a scaffolding fix seems to require changing the skill's code block, re-read the block: the bug might genuinely be there.
 
 ## Phase 4: Empirical Prompt Tuning (opt-in)
 
@@ -175,6 +186,42 @@ For each evaluation scenario, draft a natural-language trigger prompt (what a re
 
 For agent-dimension conversions (target ≠ Claude Code), Phase 5 cannot be executed inside Claude Code. Follow the strategy selected in Phase 0 §8 — typically the skill produces a fire-test document at `fire-test/<skill-name>.md` for the user to execute on the target agent and report back.
 
+### Skills with `invocable: false`
+
+If the target skill's frontmatter contains `invocable: false`, the skill does not participate in natural-language auto-fire — it is loaded only by explicit `Skill(<name>)` invocation from another skill or from the user. Phase 5 is therefore **SKIPPED by design** for such skills.
+
+Record in the plan doc as:
+
+```
+Phase 5: SKIPPED (invocable: false preserved from source)
+```
+
+No trigger-prompt drafting, no fresh-session test, and no failure-retry loop is required or appropriate. The SKIP is the correct outcome, not a gap in coverage.
+
+**Exception — invocable drift.** If the source has `invocable: true` (or the field omitted, which defaults to true) but the target has `invocable: false`, or vice versa, this is a content change that REQUIRES an approved-additions entry. Phase 5 outcome follows the target value, but the drift must be registered and justified — not silently absorbed.
+
+### User-handoff requirement (mandatory)
+
+Phase 5 cannot be PASSed within the conversion session. The skill MUST perform the following three actions before declaring the conversion run finished — these are completion-gate items, not optional:
+
+1. **Emit per-skill trigger-prompt files.** For every target skill with `invocable: true` (or the field omitted), write `phase5-<skill>.md` in the plan directory with:
+   - 2-3 natural-language prompts a real user would type
+   - Expected observable evidence (`Skill(<name>)` call appearing in transcript before the assistant answers)
+   - FAIL-response procedure (return to Phase 2 with description fix)
+
+   For `invocable: false` skills, write a stub `phase5-<skill>.md` stating "SKIPPED (invocable: false preserved from source)" with the source-frontmatter quote as evidence.
+
+2. **Emit a cross-skill handoff guide.** Write `phase5-handoff.md` in the plan directory using `references/templates/phase5-handoff-template.md`. This single file is the ONE document the user needs to open to complete Phase 5. It must contain the SKIP/action table, the user procedure, per-skill PASS criteria, and the FAIL-to-Phase-2 loopback procedure.
+
+3. **Announce the handoff explicitly in chat.** Before any completion declaration, output a user-facing message containing:
+   - The literal string `Phase 5: USER-PENDING`
+   - The path to `phase5-handoff.md`
+   - A one-sentence reminder that Phase 5 cannot be run in the current session
+
+   This message MUST NOT be suppressed even if all other phases have converged with zero drift. Completion-criterion check (via `superpowers:verification-before-completion`) must treat Phase 5 as `USER-PENDING` — not PASS — until the user explicitly reports back.
+
+**Anti-pattern:** burying the Phase 5 handoff only inside the drift report's "Outstanding Work" paragraph. The user may not read that far; the handoff must surface both in the chat output and as a dedicated file.
+
 ## Completion criteria
 
 All of the following must hold:
@@ -182,7 +229,7 @@ All of the following must hold:
 1. Phase 2 fixpoint loop converged (one full zero-change pass, or two for high-stakes)
 2. Phase 3 code executability PASS (or SKIPPED with reason logged)
 3. Phase 4 empirical-prompt-tuning converged (opt-in) OR SKIPPED by user choice
-4. Phase 5 auto-fire test PASS (or user-reported PASS for agent-dimension targets)
+4. Phase 5 auto-fire test: each target skill resolves to exactly one of — **(a) user-reported PASS** from a fresh-session test (for invocable:true targets), **(b) SKIPPED (invocable: false preserved from source)**, or **(c) user-reported PASS** for agent-dimension targets. A conversion with multiple targets is allowed to mix (a)(b)(c) freely; what is NOT allowed is leaving any target in `USER-PENDING` — that state blocks completion until the user reports back
 5. **Drift report generated and user-confirmed**
 
 Use `superpowers:verification-before-completion` to run the final check.
@@ -212,6 +259,10 @@ See `references/drift-report.md` for schema and generation rules.
 - Decide Phase 4 opt-in/out unilaterally — ask the user in Phase 0
 - Run the auto-fire test in the same session (context contamination)
 - Make unilateral decisions for agent-dimension verification strategy — walk the user through the menu
+- Bury the Phase 5 user-handoff inside the drift report — surface it in chat AND as a dedicated `phase5-handoff.md`
+- Retroactively tweak a `[critical]` checklist item after seeing the subagent's output (goalpost moving)
+- Derive Phase 4 scenarios from the target skill's body content instead of its description + when-to-use (confirmation bias)
+- Modify skill content to make a sample-build / test-harness bug disappear
 
 **Approved-additions register:**
 - Treat a registered entry as source-compare material (would cause infinite loops)

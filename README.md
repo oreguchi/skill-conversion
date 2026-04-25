@@ -72,6 +72,20 @@ This plugin was shipped only after being run through its own Phase 4.
 
 See [`docs/self-validation.md`](./docs/self-validation.md) for the full evidence summary.
 
+### Changes in v0.2.0
+
+Six structural improvements derived from a post-mortem of a 5-skill VB.NET conversion run where time-pressure exposed protocol gaps:
+
+- **Phase 5 `invocable: false` handling.** Target skills whose frontmatter carries `invocable: false` (i.e., explicit-invocation-only skills) now formally SKIP Phase 5 by design — no trigger-prompt drafting, no fresh-session test. Invocable drift between source and target requires an approved-additions entry.
+- **Phase 5 user-handoff is now structural.** Because Phase 5 cannot PASS inside the conversion session, the skill MUST emit a `phase5-handoff.md` from a new template, write per-skill trigger-prompt files, and announce `Phase 5: USER-PENDING` explicitly in chat before completion is declared.
+- **Phase 4 "blind" is now structurally defined.** Three conditions (fresh instance, content isolation, scorer separation) must be checked per dispatch, with semi-blind runs flagged explicitly.
+- **`[critical]` checklist items are committed at Phase 0 / preparation and cannot be retroactively tweaked.** Failing a `[critical]` item defaults to FAIL and proposes a skill-content fix; legitimate checklist revision requires halting and returning to Phase 0.
+- **Phase 3 failure categorization.** Build errors are now split between skill-content failures (→ return to Phase 2) and scaffolding failures (→ fix harness, stay in Phase 3); every fix carries a `[content]` / `[scaffolding]` tag in the record.
+- **Phase 4 scenarios must be derived from description + when-to-use only**, not from the skill's body content, to prevent confirmation bias.
+- **Drift report requires a pre-emit frontmatter-diff table.** Every source vs. target frontmatter field is tabled; any ✗ without an approved-additions entry blocks sign-off.
+
+Full rationale and session-level post-mortem: see the improvement-proposal document in the 2026-04-21 VB.NET WinForms conversion project.
+
 ### Prerequisites
 
 Two other plugins must be installed first:
@@ -204,6 +218,20 @@ Phase 5  Auto-fire テスト     ← 新規セッションで description が発
 - 最終 drift 判定：**LOW**
 
 エビデンスの全貌は [`docs/self-validation.md`](./docs/self-validation.md) にまとめてあります。
+
+### v0.2.0 での変更点
+
+VB.NET WinForms スキル 5 本を時間制約下で変換した実績からの post-mortem に基づく 6 つの構造改善:
+
+- **Phase 5 の `invocable: false` 扱いを明文化。** frontmatter に `invocable: false` が付いているターゲットは Phase 5 を設計上 SKIP する（トリガープロンプト作成も fresh-session テストも不要）。source と target の invocable 値が異なる場合は approved-additions エントリが必要。
+- **Phase 5 のユーザ・ハンドオフを構造化。** Phase 5 は変換セッション内では PASS 到達不能であるため、skill が `phase5-handoff.md`（新テンプレート）と per-skill `phase5-<skill>.md` を必ず生成し、完了宣言前にチャットで `Phase 5: USER-PENDING` を明示的に通知するよう必須化。
+- **Phase 4 の "blind" を構造的に定義。** dispatch ごとに 3 条件（fresh instance / content isolation / scorer separation）を満たすかチェックし、満たせない場合は semi-blind と明示記録。
+- **`[critical]` チェック項目は事前コミット、結果を見てからの変更禁止。** `[critical]` 不達は FAIL が既定、スキル内容の修正提案へ進む。チェックリスト自体の見直しは一旦停止して Phase 0 へ戻るルートのみ許容。
+- **Phase 3 失敗の分類。** skill 本体のコードブロック不良（→ Phase 2 再走）と test-harness / sample-build 側の不良（→ scaffolding 側修正、Phase 2 再走なし）を区別。各修正は `[content]` / `[scaffolding]` タグ付きで記録。
+- **Phase 4 シナリオは description + when-to-use からのみ作成。** 本文から作ると confirmation bias が混入するため禁止。
+- **drift report に pre-emit frontmatter diff テーブル必須化。** ソース vs ターゲットの各フィールドを表で並置し、approved-additions に紐付かない ✗ が 1 つでもあれば sign-off ブロック。
+
+背景と session 単位の post-mortem は 2026-04-21 の VB.NET WinForms 変換プロジェクト配下の improvement-proposal ドキュメント参照。
 
 ### 必要な前提プラグイン
 

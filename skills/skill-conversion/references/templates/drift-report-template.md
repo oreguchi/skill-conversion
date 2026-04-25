@@ -5,6 +5,23 @@
 **Conversion dimensions:** <list>
 **Report date:** <YYYY-MM-DD>
 
+## Frontmatter verification
+
+| Skill | Field | Source value | Target value | Status |
+|---|---|---|---|---|
+| <name> | name | ... | ... | ✓ / ✗ |
+| <name> | description | ... | ... | ✓ / ✗ |
+| <name> | invocable | ... | ... | ✓ / ✗ |
+| <name> | compatibility | ... | ... | ✓ / ✗ |
+
+(Every ✗ must link to an approved-additions entry. Unregistered ✗ blocks sign-off.)
+
+## Phase 5 status
+
+| Target skill | Status | Evidence |
+|---|---|---|
+| <skill> | PASS / SKIPPED / USER-PENDING | `phase5-result.md` / source frontmatter quote / `phase5-handoff.md` |
+
 ## Summary
 
 - Total approved additions: N
