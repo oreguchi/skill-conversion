@@ -3,7 +3,15 @@
 **Source:** <source-skill-path>, version <N>
 **Target:** <target-path>
 **Conversion dimensions:** <list>
+**Conversion Profile:** high-fidelity / balanced / high-utility   (v1.0 NEW)
+**Phase 4 opt-in state:** in / out (out is allowed only when profile = high-fidelity; reason recorded in plan-doc §7.1)
 **Report date:** <YYYY-MM-DD>
+
+## Catalogs used (v1.0 NEW)
+
+| Catalog | Path | Persistence status | Last updated | Tier reference range |
+|---|---|---|---|---|
+| <name> | references/catalogs/<file>.md | persistent / memory-only | YYYY-MM-DD | Tier 1 / Tier 1+2 / Tier 1+2+3 |
 
 ## Frontmatter verification
 
@@ -33,15 +41,29 @@
 
 ## Phase 1 approved additions
 
-| Added-on | Location | Summary | Reason | Impact | Approver |
-|---|---|---|---|---|---|
+| Added-on | Location | Summary | Category | Reason | Impact | Approver |
+|---|---|---|---|---|---|---|
 
 ## Phase 4 approved additions
 
 (If Phase 4 was SKIPPED, state so and omit the table.)
 
-| Added-on | Location | Summary | Reason | Impact | Approver |
+| Added-on | Location | Summary | Category | Reason | Impact | Approver |
+|---|---|---|---|---|---|---|
+
+## Phase 3 adopted-API roster (v1.0 NEW)
+
+| API | Officiality | Package | Both-pattern annotation | Source URL |
+|---|---|---|---|---|
+| <api> | Official / Standard / Peripheral / Unknown | <pkg> | yes / no / N/A | <url> |
+
+## Profile-rejected proposals (v1.0 NEW)
+
+Additions that the profile mechanically rejected (and are therefore NOT adopted).
+
+| Date | Location | Proposal summary | Category | Impact | Rejection reason |
 |---|---|---|---|---|---|
+| YYYY-MM-DD | <loc> | <summary> | A / B / C | minor/moderate/heavy | profile=<X> rejects category <Y> at this impact |
 
 ## Phase 4 rejected proposals
 
