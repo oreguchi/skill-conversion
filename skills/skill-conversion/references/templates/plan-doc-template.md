@@ -83,17 +83,18 @@ At least one row must be "yes".
 
 > <reason>
 
-### §X.1 Catalog status (v1.0)
+### §X.1 Catalog status check (v1.0)
 
 - Persisted catalogs scanned: <list / "none">
 - Match for this conversion: <yes — reuse / no — generate fresh>
 
-### §X.2 Catalog content (v1.0)
+### §X.2 Catalog generation and two-stage approval (v1.0)
 
-(Record the path and a short summary of the generated / reused catalog here)
+(Record the path and a short summary of the generated / reused catalog here. Stage 1 = content approval, Stage 2 = persistence approval — see `references/catalog-system.md`.)
 
 - Catalog: `<path or "memory only">`
-- Persistence approval: <yes / no>
+- Stage 1 content approval: <yes / no>
+- Stage 2 persistence approval: <yes / no>
 - Tier reference range (profile-linked): Tier 1 / Tier 1+2 / Tier 1+2+3
 
 ### 8. Cross-agent verification strategy (required if agent dimension is "yes")
