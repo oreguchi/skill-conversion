@@ -57,9 +57,10 @@ At least one dimension must change. Dimensions can combine freely (e.g., Claude 
 ## Phase overview
 
 ```
-Phase 0: Scope Declaration          Declare dimensions, build conversion-rule tables,
-                                     scope-strip list, init approved-additions register,
-                                     decide Phase 4 opt-in, select verification strategy
+Phase 0: Scope Declaration          Profile declaration, Catalog status check / generation
+                                     / two-stage approval, conversion-rule tables,
+                                     scope-strip list, approved-additions register init,
+                                     evaluation-scenario skeleton (Tier-linked)
     ↓
 Phase 1: Initial Translation         Apply conversion rules to source files
                                      (parallelizable via subagent-driven-development)
@@ -122,6 +123,43 @@ Before writing any output, declare the 8 required items in a fresh plan doc:
 Call `superpowers:writing-plans` to create the plan doc at `docs/plans/YYYY-MM-DD-<target-skill-name>-conversion.md`. Use `references/templates/plan-doc-template.md` as the starting scaffold. **If the conversion run includes iterative empirical testing** (e.g., multiple Phase 4 iterations), use the subdirectory form `docs/plans/YYYY-MM-DD-<target-skill-name>-conversion/` and place per-iteration files inside it (e.g., `iter1-phase0-plan.md`, `empirical-results.md`, `drift-report.md`).
 
 **Do not proceed to Phase 1 until all 8 items are written and the user has confirmed.**
+
+### §X.1: Catalog status check (v1.0)
+
+At Phase 0 entry, scan persisted catalogs and present them to the user:
+
+```
+[Phase 0 §X.1: Catalog status]
+Persisted catalogs:
+- vb-net-winforms.md (last updated 2026-04-25)
+- python-go.md (last updated 2026-04-10)
+
+Matches for this conversion: vb-net-winforms.md
+Reuse? [Y/n]
+```
+
+- Reuse → adopt the catalog into Phase 0 §6 / Phase 1
+- Regenerate → proceed to §X.2
+
+### §X.2: Catalog generation and two-stage approval (v1.0)
+
+**Stage 1 — content approval (gate):**
+
+A subagent generates a catalog draft following the Tier classification criteria in `references/catalogs/generation-subagent-prompt.md`. The user reviews Tier classification and item content, then approves (with optional edits). Once approved, the catalog is used for Phase 0 §6 (in memory).
+
+**Stage 2 — persistence approval (NEW):**
+
+After content approval, the user is asked whether to persist:
+
+```
+[Catalog persistence confirmation]
+Persist this catalog?
+
+□ Persist  → save to references/catalogs/<lang>-<framework>.md + auto-update INDEX.md
+□ One-shot → memory only, discarded after Phase 5
+```
+
+See `references/catalog-system.md` for the full lifecycle.
 
 ## Phase 1: Initial Translation
 
