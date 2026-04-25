@@ -105,7 +105,16 @@ Before writing any output, declare the 8 required items in a fresh plan doc:
     - (b) **Realistic user prompts** — what a user unfamiliar with the skill's internals would actually type
 
     Scenarios MUST NOT be derived by studying the source skill's body content (headings, code examples, reference-file sections). Doing so bakes in confirmation bias: the scenarios only test what you already know the skill covers, making Phase 4 a self-consistency check rather than an effectiveness check. If you must read the body to understand the source, **draft scenarios first from description + when-to-use alone**, then re-check after reading whether your scenarios accidentally leak body knowledge and revise if so.
-7. **Phase 4 opt-in decision** — yes (recommended) or no (with reason). See `references/verification-stages.md` §Phase 4 for trade-offs
+
+    **Catalog reference (v1.0 NEW):** when drafting the scenario skeleton, embed the Tier-N expected-capability items from the active Catalog (Tier range determined by §7 profile) into each Requirement checklist. Tag each embedded item with `[Tier N]` to make catalog reference points explicit. See `references/catalog-system.md`.
+7. **Conversion Profile declaration** (v1.0) — declare the conversion's expected-value level in 3 stages:
+   - `高忠実度` (high-fidelity)
+   - `バランス` (balanced)  ← default when omitted (warning logged)
+   - `高有用性` (high-utility)
+
+   Profile mechanically determines 4 axes: **Phase 4 opt-in state**, **approved-additions threshold**, **Catalog reference range**, and (Phase 2 fixpoint convergence is always high-stakes regardless of profile). Unknown values halt for re-declaration.
+
+   **Phase 4 opt-out:** allowed only when profile = high-fidelity, and the reason MUST be recorded in §7.1. Opt-out attempts under balanced / high-utility halt and force re-selection. See `references/profile-system.md` for full semantics.
 8. **Verification strategy** — if any agent dimension is non-identity, walk the user through `references/cross-agent-verification-menu.md` and record the choice per Phase 3 / 4 / 5. If the Agent dimension is identity (source-agent = target-agent), mark §8 `N/A — Agent dimension = identity` and the default Phase 3/4/5 strategies apply; the menu walk-through is skipped.
 
 **Reading policy during Phase 0:** when an item above points to a `references/*.md` file (items 3, 5, 7, 8), open and read it before filling that item. The SKILL.md body is an index; the referenced files contain the schemas and decision matrices.
