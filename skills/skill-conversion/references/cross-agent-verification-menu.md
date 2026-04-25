@@ -55,3 +55,9 @@ In Phase 0 §8:
 ## Evolving agent specs
 
 Each target agent's skill format and tool names change over time. Never reuse a prior conversion's mapping blindly — verify each target-agent's current spec at the start of Phase 0.
+
+## v1.0 supplementary note
+
+When the agent dimension is non-identity AND the profile is balanced or high-utility (Phase 4 forced on), strategy selection from this menu is mandatory. Cross-reference `references/profile-system.md` together with this file.
+
+If the profile is high-fidelity AND the agent dimension is non-identity AND Phase 4 is opt-out, the cross-agent verification strategy applies only to §3 / §5 (the §4 row is N/A).
