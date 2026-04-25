@@ -92,3 +92,13 @@ When multiple dimensions change together, each dimension's tables are produced i
 ## Schema templates
 
 Fully worked examples of each table live in `references/templates/` (not this file).
+
+---
+
+## v1.0 supplementary note: relationship to Profile
+
+The dimensions described in this file (Technical / Locale / Agent) are a **formal description** of the conversion. They are independent from the Conversion Profile (high-fidelity / balanced / high-utility), which expresses the user's expected-value level.
+
+Example: a "C# → VB.NET" conversion (Technical dimension) can run under any of high-fidelity / balanced / high-utility profile — that choice is declared separately.
+
+See `references/profile-system.md`.
