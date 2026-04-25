@@ -1,7 +1,7 @@
 {
   "name": "skill-conversion",
-  "version": "0.2.0",
-  "description": "Convert existing Claude Code skills across three dimensions — programming language/framework, natural-language locale, and target agent runtime — via a disciplined fixpoint review loop, approved-additions register, and three-layer verification. Requires superpowers and empirical-prompt-tuning plugins.",
+  "version": "1.0.0",
+  "description": "Convert existing Claude Code skills across three dimensions — programming language/framework, natural-language locale, and target agent runtime — via a disciplined fixpoint review loop, approved-additions register, three-layer verification, and Conversion Profile + Catalog system (v1.0). Requires superpowers and empirical-prompt-tuning plugins.",
   "author": {
     "name": "oreguchi",
     "email": "228712732+oreguchi@users.noreply.github.com"

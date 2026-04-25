@@ -6,8 +6,8 @@
   "plugins": [
     {
       "name": "skill-conversion",
-      "description": "Convert existing Claude Code skills across three dimensions (technical / locale / agent) with disciplined fixpoint loop and three-layer verification.",
-      "version": "0.2.0",
+      "description": "Convert existing Claude Code skills across three dimensions (technical / locale / agent) with disciplined fixpoint loop, three-layer verification, and Conversion Profile + Catalog system (v1.0).",
+      "version": "1.0.0",
       "source": "./",
       "author": {
         "name": "oreguchi"
