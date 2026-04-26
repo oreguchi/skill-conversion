@@ -1,5 +1,24 @@
 # Release Notes
 
+## 1.0.1 — 2026-04-27
+
+**Patch release: install-blocking bug fix.** No spec or feature changes.
+
+### Bug fix
+
+- **`.claude-plugin/plugin.json` was missing the `skills` array** — the manifest did not enumerate `./skills/skill-conversion`, so Claude Code could not resolve the plugin's component path during install. Symptom: `Failed to install: Source path does not exist: <marketplace clone path>`.
+- The same gap existed in v0.2.0 but went unnoticed because earlier Claude Code releases auto-discovered the `skills/` directory. Newer Claude Code versions require the explicit array.
+
+### Files changed
+
+- `.claude-plugin/plugin.json` — added `"skills": ["./skills/skill-conversion"]`
+- `.claude-plugin/marketplace.json` — version bump 1.0.0 → 1.0.1
+- `RELEASE_NOTES.md` — this entry
+
+No backward-compat impact for already-installed v1.0.0 users; reinstall (or `/plugin update`) picks up the fix.
+
+---
+
 ## 1.0.0 — 2026-04-25
 
 **Major release: stable.** Introduces the Conversion Profile + Catalog System + Phase-control trinity.
