@@ -15,7 +15,15 @@
 - `.claude-plugin/marketplace.json` — version bump 1.0.0 → 1.0.1
 - `RELEASE_NOTES.md` — this entry
 
-No backward-compat impact for already-installed v1.0.0 users; reinstall (or `/plugin update`) picks up the fix.
+No backward-compat impact for already-installed v1.0.0 users. Update procedure (Claude Code has no single-step `/plugin update`):
+
+```
+/plugin uninstall skill-conversion@skill-conversion-marketplace
+/plugin marketplace update skill-conversion-marketplace
+/plugin install skill-conversion@skill-conversion-marketplace
+```
+
+Or enable auto-update for the marketplace in `/plugin` UI → Marketplaces tab.
 
 ---
 
